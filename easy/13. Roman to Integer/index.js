@@ -2,7 +2,7 @@
  * @param {string} s
  * @return {number}
  */
-var romanToInt = function(s) {
+const romanToInt = function (s) {
   const roman = {
     I: 1,
     V: 5,
