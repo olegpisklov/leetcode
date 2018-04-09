@@ -32,7 +32,6 @@ function mergeTwoLists(l1, l2) {
       return merge(l1.next, null, result.concat([l1.val]));
     }
 
-
     if (l1.val < l2.val) {
       return merge(l1.next, l2, result.concat([l1.val]));
     } else if (l1.val === l2.val) {

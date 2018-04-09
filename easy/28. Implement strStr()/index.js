@@ -7,7 +7,6 @@ var strStr = function(haystack, needle) {
   const haystackArr = haystack.split('');
   const needleArr = needle.split('');
 
-
   if (!needleArr.length) {
     return 0;
   }
