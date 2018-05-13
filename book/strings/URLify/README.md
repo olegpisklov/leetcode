@@ -6,4 +6,5 @@ perform this operation in place.)
 **Example**
 
 Input: "Mr John Smith "J 13
+
 Output: "Mr%20J ohn%20Smith" 
