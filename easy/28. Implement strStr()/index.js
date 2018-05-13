@@ -15,7 +15,7 @@ var strStr = function(haystack, needle) {
     for (var j = 0; j < needleArr.length; ++j) {
       if (haystackArr[i + j] !== needleArr[j]) {
         break;
-      };
+      }
     }
 
     if (j === needle.length) {
