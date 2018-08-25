@@ -1,5 +1,9 @@
 const LinkedList = require('../liked-list');
-
+/**
+ * Recursive solution
+ * @param head
+ * @param k
+ */
 const findK = (head, k) => {
     const i = {value: 0};
 
