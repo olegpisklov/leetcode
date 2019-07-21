@@ -2,7 +2,9 @@ module.exports = class LinkedList {
     constructor(value) {
         this.head = null;
         this.length = 0;
-        this.addToHead(value);
+        if (value) {
+            this.addToHead(value);
+        }
     }
 
     addToHead(value) {
@@ -11,6 +13,23 @@ module.exports = class LinkedList {
         this.head = newNode;
         this.length++;
         return this;
+    }
+
+    addToTail(value) {
+        const newNode = { data: value };
+
+        if (!this.head) {
+            this.head = newNode;
+            return;
+        }
+
+        let currentTail = this.head;
+
+        while (currentTail.next) {
+            currentTail = currentTail.next;
+        }
+
+        currentTail.next = newNode;
     }
 
     removeFromHead() {
