@@ -1,4 +1,8 @@
 const findCommonAncestor = (node1, node2, root) => {
+    if (!root || root === node1 || root === node2) {
+        return root;
+    }
+
     const isNode1onLeft = isOnSubtree(node1, root.left);
     const isNode2onLeft = isOnSubtree(node2, root.right);
 
