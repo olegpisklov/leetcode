@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Worker</title>
+        <script>
+            var myWorker = new Worker('worker.js');
+
+            myWorker.onmessage = function (oEvent) {
+                console.log('Worker said : ' + oEvent.data);
+            };
+
+            myWorker.postMessage('sending to worker');
+        </script>
+    </head>
+    <body>
+        <h1>Hello worker!</h1>
+    </body>
+</html>
