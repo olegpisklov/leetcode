@@ -27,6 +27,35 @@ const isOnSubtree = (node, root) => {
     return isOnSubtree(node, root.left) || isOnSubtree(node, root.right);
 };
 
+const mySolution = (node1, node2, root) => {
+    let result = {
+        node: null
+    };
+
+    const traverse = (node, result) => {
+        if (!node || result.node) {
+            return
+        }
+
+        node.markedLeft = traverse(node.left, result);
+        node.markedRight = traverse(node.right, result);
+
+        if (node.markedLeft && node.markedRight) {
+            result.node = node;
+        }
+
+        if (node.markedLeft || node.markedRight) {
+            return true;
+        }
+
+        return node === node1 || node === node2;
+    };
+
+    traverse(root, result);
+
+    return result.node.value;
+};
+
 class BinaryTreeNode {
     constructor(value) {
         this.value = value;
@@ -56,4 +85,4 @@ node5.left = node8;
 node5.right = node9;
 node3.right = node10;
 
-console.log(findCommonAncestor(node9, node8, node1));
+console.log(mySolution(node9, node8, node1));
