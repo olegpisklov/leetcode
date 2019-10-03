@@ -36,7 +36,17 @@ class BinaryNode {
     }
 
     getRandomeNode() {
+        const leftSize = this.left ? this.left.size() : 0;  
+        const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+        const index = getRandomInt(this.size);
 
+        if (index < leftSize) {
+            return this.left.getRandomeNode();
+        } else if (index === leftSize) {
+            return this;
+        } else {
+            return this.right.getRandomeNode();
+        }
     }
 
     delete(value) {
