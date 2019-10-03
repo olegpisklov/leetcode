@@ -20,10 +20,19 @@ class BinaryNode {
                 this.left =  new BinaryNode(value);
             }
         }
+
+        ++this.size;
     }
 
     find(value) {
-
+        if (value === this.value) {
+            return this;
+        } else if (value <= this.value) {
+            return this.left ? this.left.find(value) : null;
+        } else if (value > this.value) {
+            return this.right ? this.right.find(value) : null;
+        }
+        return null;
     }
 
     getRandomeNode() {
