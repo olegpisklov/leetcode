@@ -7,11 +7,17 @@ class BinaryNode {
     }
 
     insert(value) {
-        if (value > this.root.value) {
-            if (this.root.right) {
-                this.insert(this.root.right.value);
+        if (value > this.value) {
+            if (this.right) {
+                this.right.insert(value);
             } else {
-
+                this.right = new BinaryNode(value);
+            }
+        } else {
+            if (this.left) {
+                this.left.insert(value);
+            } else {
+                this.left =  new BinaryNode(value);
             }
         }
     }
