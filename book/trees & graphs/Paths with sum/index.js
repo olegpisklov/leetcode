@@ -62,4 +62,44 @@ node3.right = node10;
 //        8     15          27
 //     3   10  14  16
 
-console.log(getPathsWithSumCount(node1, 40));
+// console.log(getPathsWithSumCount(node1, 40));
+
+
+const getPathsWithTargetSumCount = (root, targetSum) => {    
+    const countMap = {};
+
+    const traverse = (node, runningSum, targetSum) => {
+        if (!node) {
+            return 0;
+        }
+
+        let total = 0;
+        const currentSum = runningSum + node.value;
+
+        if (currentSum === targetSum) {
+            ++total;
+        }
+
+        if (countMap[currentSum - targetSum]) {
+            ++total;
+        }
+
+        if (countMap[currentSum]) {
+            countMap[currentSum] += 1;
+        } else {
+            countMap[currentSum] = 1;
+        }
+
+        total += traverse(node.left, currentSum, targetSum);        
+        total += traverse(node.right, currentSum, targetSum);
+
+        countMap[currentSum] -= 1;
+
+        return total;
+    }
+
+    return traverse(root, 0, targetSum);
+};
+
+console.log(getPathsWithTargetSumCount(node1, 40));
+
