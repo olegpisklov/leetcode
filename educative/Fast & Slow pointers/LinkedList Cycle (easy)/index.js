@@ -22,7 +22,23 @@ const has_cycle = function(head) {
         fastPointer = fastPointer.next.next;
     }
 
+    console.log('Length', calculateCycleLength(slowPointer));
+    
     return true;  
+}
+
+const calculateCycleLength = (node) => {
+    let current = node;
+    let length = 0;
+
+    while (true) {
+        ++length;
+        current = current.next;
+
+        if ( current === node) {
+            return length;
+        }
+    }    
 }
 
 
