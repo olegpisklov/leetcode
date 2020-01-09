@@ -22,8 +22,14 @@ const has_cycle = function(head) {
         fastPointer = fastPointer.next.next;
     }
 
-    console.log('Length', calculateCycleLength(slowPointer));
-    
+    const cycleLength = calculateCycleLength(slowPointer);
+
+    console.log('Length', cycleLength);
+
+    const start = findCycleStart(head, cycleLength);
+
+    console.log('Start', start);
+
     return true;  
 }
 
@@ -39,6 +45,24 @@ const calculateCycleLength = (node) => {
             return length;
         }
     }    
+}
+
+const findCycleStart = (head, cycleLength) => {
+    let slow = head;
+    let fast = head;
+    let i = 0;
+
+    while (i !== cycleLength) {
+        fast = fast.next;
+        ++i;
+    }
+
+    while (slow !== fast) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+
+    return slow;
 }
 
 
