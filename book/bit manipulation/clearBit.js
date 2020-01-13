@@ -13,7 +13,7 @@ const clearBitsFromMostLeftToI = (num, i) => {
 console.log(clearBitsFromMostLeftToI(15, 2));
 
 const clearBitsFromItoRight = (num, i) => {
-    const mask = -1 << (i + 1);
+    const mask = -1 << (i + 1); // 1111111111110000
     return num & mask;
 }
 
