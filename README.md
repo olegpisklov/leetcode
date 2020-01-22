@@ -1,1 +1,1 @@
-Solving questions from `leetcode.com` and `Cracking the coding interview` book.
+Solving questions from `leetcode.com`, `educative.io` and `Cracking the coding interview` book.
