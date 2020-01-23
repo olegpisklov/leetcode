@@ -48,4 +48,26 @@ const getAlternatingSequences = (num) => {
     return result;
 }
 
-console.log(getLongestSequence(1775));
+const optimalFlip = (num) => {
+    let prevLength = 0;
+    let currentLength = 0;
+    let maxLength = 1;
+
+    while (num !== 0) {
+        if ((num & 1) === 1) { // current bit is 1
+            ++currentLength;
+        } else if ((num & 1) === 0) { // current bit is 0
+            prevLength = (num & 2) === 0 ? 0 : currentLength;
+            currentLength = 0;
+        }
+
+        maxLength = Math.max(prevLength + 1 + currentLength, maxLength);
+
+        num >>>= 1;
+    }
+
+    return maxLength;
+}
+
+console.log(getLongestSequence(1775)); // space - O(b) 
+console.log(optimalFlip(1775)); // space - O(1)
