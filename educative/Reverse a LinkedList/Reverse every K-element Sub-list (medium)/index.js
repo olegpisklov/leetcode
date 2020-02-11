@@ -23,11 +23,11 @@ class Node {
     let current = head;
   
     while (true) {
-      let i = 1;
+      let i = 0;
       let sublist = null;
       const startNode = current;
   
-      while (i !== k + 1 && current) {
+      while (i < k && current) {
         const next = current.next;
         current.next = sublist;
         sublist = current;
