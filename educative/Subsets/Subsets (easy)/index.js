@@ -13,6 +13,9 @@ const find_subsets = function(nums) {
   
     return subsets;
   };
+
+  // Time: O(2^N)
+  // Space: O(2^N)
   
   console.log('Here is the list of subsets: ');
   let result = find_subsets([1, 3]);
