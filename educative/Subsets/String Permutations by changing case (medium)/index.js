@@ -29,6 +29,8 @@ const find_letter_case_string_permutations = function(str) {
   
     return char.toUpperCase();
   };
+
+  // Time and Space: O(N * 2^N)
   
   console.log(`String permutations are: ${find_letter_case_string_permutations("ad52")}`)
   console.log(`String permutations are: ${find_letter_case_string_permutations("ab7c")}`)
