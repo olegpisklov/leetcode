@@ -17,6 +17,10 @@ const minimum_cost_to_connect_ropes = function(ropeLengths) {
   return sum;
 };
 
+// Time: O(N * logN)
+
+// Space: O(N)
+
 
 console.log(`Minimum cost to connect ropes: ${minimum_cost_to_connect_ropes([1, 3, 11, 5])}`)
 console.log(`Minimum cost to connect ropes: ${minimum_cost_to_connect_ropes([3, 4, 5, 6])}`);
