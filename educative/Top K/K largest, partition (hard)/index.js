@@ -19,6 +19,13 @@ const findKLargestNum = (arr, k) => {
 // put all elements less then a pivot to the left, all bigger - to the right
 const partition = (arr, low, hight) => {
     let lowIndex = low;
+    // We take the most right element as a pivot.
+    // In cases when we have a sorted array or an array with all duplicates values,
+    // we get a worst case time complexity - O(n^2).
+    // In order to mitigate this risk we could use a randome pivot:
+    //
+    // const pivotIndex = Math.floor(Math.random() * (high - low + 1)) + low;
+    // [nums[pivotIndex], nums[high]] = [nums[high], nums[pivotIndex]];
     let pivot = arr[hight];
 
     for (let i = low; i < hight; ++i) {
@@ -34,5 +41,7 @@ const partition = (arr, low, hight) => {
     return lowIndex;
 }
 
+// Time: avarage case - O(N), worst case - O(N^2)
+// Space: O(1)
 
 console.log(findKLargestNum([2, 7, 3, 4, 9, 12, 34, 5], 3)) // 9
