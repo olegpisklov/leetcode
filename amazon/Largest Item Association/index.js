@@ -27,6 +27,9 @@ const main = (list) => {
     return maxGroups[0];
 }
 
+// Time: E + V * log(V) - where E - number of edges, V - number of vertices
+// Space: E + V
+
 const sortMaxGroups = (groups) => {
     groups.sort((a, b) => {
         let result = 0;
