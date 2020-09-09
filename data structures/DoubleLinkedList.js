@@ -28,6 +28,19 @@ class DLinkedList {
         return node;
     }
     
+    addToTail(val) {
+        const node = new DListNode(val);
+        const prev = this.tail.prev;
+
+        node.next = this.tail;
+        node.prev = prev;
+        prev.next = node;
+        
+        this.tail.prev = node;
+        
+        return node;
+    }
+    
     removeFromTail() {
         const prev = this.tail.prev;
         const val = prev.val;
@@ -37,8 +50,29 @@ class DLinkedList {
         return val;
     }
     
+    removeFromHead() {
+        const next = this.head.next;
+        const val = next.val;
+        
+        this.removeNode(next);
+        
+        return val;
+    }
+    
     removeNode(node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
+    }
+    
+    peekHead() {
+        return this.head.next.val;
+    }
+    
+    peekTail() {
+        return this.tail.prev.val;
+    }
+    
+    isEmpty() {
+        return !this.head.next;
     }
 }
