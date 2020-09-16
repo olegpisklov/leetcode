@@ -73,6 +73,6 @@ class DLinkedList {
     }
     
     isEmpty() {
-        return !this.head.next;
+        return !this.head.next.val;
     }
 }
