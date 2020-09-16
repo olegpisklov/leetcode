@@ -3,13 +3,23 @@
  * @param {number} target
  * @return {number[]}
  */
-const twoSum = function (nums, target) {
-  for (let i = 0; i < nums.length; ++i) {
-    const diff = target - nums[i];
-    const index = nums.indexOf(diff);
+var twoSumBrut = function(nums, target) {
+  for (let i = 0; i < nums.length; ++i) {        
+      for (let j = i + 1; j < nums.length; ++j) {
+          if (nums[j] === target - nums[i]) {
+              return [i, j];
+          }
+      }
+  }
+};
 
-    if (index !== -1 && index !== i) {
-      return [i, index].sort();
-    }
+var twoSum = function(nums, target) {
+  const map = {};
+  
+  for (let i = 0; i < nums.length; ++i) {        
+      if (map[nums[i]] !== undefined) {
+          return [map[nums[i]], i];
+      }
+      map[target - nums[i]] = i;
   }
 };
