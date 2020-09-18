@@ -3,27 +3,29 @@
  * @return {boolean}
  */
 var isValid = function(s) {
-  const br = {
-    '{': '}',
-    '(': ')',
-    '[': ']',
-  };
-
-  const arr = s.split('');
-
-  if (arr.length % 2 !== 0) {
-    return false;
+  const closed = {
+      ']': '[',
+      ')': '(',
+      '}': '{'
   }
-
-  const closeStack = [];
-
-  const result = arr.every(char => {
-    if (br[char]) {
-      closeStack.push(br[char]);
-      return true;
-    }
-    return char === closeStack.pop();
-  });
-
-  return result && !closeStack.length;
+  const openedStack = [];
+      
+  for (let i = 0; i < s.length; ++i) {
+      const brace = s[i];
+      
+      if (closed[brace] === undefined) {
+          openedStack.push(brace);
+      } else {
+          if (!openedStack.length) {
+              return false;
+          }
+          const lastOpened = openedStack.pop();
+          
+          if (lastOpened !== closed[brace]) {
+              return false;
+          }
+      }        
+  }
+  
+  return openedStack.length === 0;
 };
