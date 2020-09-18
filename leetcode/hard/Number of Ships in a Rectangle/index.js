@@ -33,7 +33,6 @@ var countShips = function(sea, topRight, bottomLeft) {
         countShips(sea, [xMid, yMid], bottomLeft) +
         countShips(sea, [topRight[0], yMid], [xMid + 1, bottomLeft[1]]) + 
         countShips(sea, [xMid, topRight[1]], [bottomLeft[0], yMid + 1]);
-
 };
 
 const isEqual = (point1, point2) => {
