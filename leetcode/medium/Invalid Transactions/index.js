@@ -1,12 +1,12 @@
 class Transaction {
     constructor(transaction) {
-        const arr = transaction.split(',');
+        const [name, time, amount, city] = transaction.split(',');
         
         this.raw = transaction;
-        this.name = arr[0];
-        this.time = parseInt(arr[1]);
-        this.amount = parseInt(arr[2]);
-        this.city = arr[3];
+        this.name = name;
+        this.time = time;
+        this.amount = amount;
+        this.city = city;
     }
 }
 
