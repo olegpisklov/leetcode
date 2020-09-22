@@ -1,6 +1,7 @@
 class DListNode {
-    constructor(val) {
+    constructor(val, key) {
         this.val = val;
+        this.key = key;
         this.next = null;
         this.prev = null;
     }
@@ -15,8 +16,8 @@ class DLinkedList {
         this.tail.prev = this.head;
     }
     
-    addToHead(val) {
-        const node = new DListNode(val);
+    addToHead(val, key) {
+        const node = new DListNode(val, key);
         const next = this.head.next;
         
         node.next = next;
@@ -30,11 +31,11 @@ class DLinkedList {
     
     removeFromTail() {
         const prev = this.tail.prev;
-        const val = prev.val;
+        const key = prev.key;
         
         this.removeNode(prev);
         
-        return val;
+        return key;
     }
     
     removeNode(node) {
@@ -63,15 +64,16 @@ LRUCache.prototype.get = function(key) {
     
     this.moveToHead(key);
 
-    return this.map[key][0];
+    return this.map[key].val;
 };
 
 LRUCache.prototype.moveToHead = function(key) {
-    const oldNode = this.map[key][1];
+    const oldNode = this.map[key];
     this.dqueue.removeNode(oldNode);
         
-    const newNode = this.dqueue.addToHead(key);
-    this.map[key][1] = newNode;
+    const newNode = this.dqueue.addToHead(oldNode.val, key);
+
+    this.map[key] = newNode;
 };
 
 /** 
@@ -80,15 +82,17 @@ LRUCache.prototype.moveToHead = function(key) {
  * @return {void}
  */
 LRUCache.prototype.put = function(key, value) {
-    if (this.map[key] !== undefined) {
-        this.map[key][0] = value;
+    const oldNode = this.map[key];
+    
+    if (oldNode !== undefined) {
+        oldNode.val = value;
         this.moveToHead(key);
         return;
     }
     
-    const node = this.dqueue.addToHead(key);
+    const node = this.dqueue.addToHead(value, key);
     
-    this.map[key] = [value, node];
+    this.map[key] = node;
         
     if (Object.keys(this.map).length > this.capacity) {
         const firstKey = this.dqueue.removeFromTail();
