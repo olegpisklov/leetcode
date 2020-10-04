@@ -6,25 +6,25 @@
 var solveSudoku = function(board) {
     if (!board || !board.length) return;
     
-    backtrack(board);
+    backtrack(board, 0, 0);
 };
 
-const backtrack = (board) => {
-    for (let i = 0; i < board.length; ++i) {
-        for (let j = 0; j < board[0].length; ++j) {
+const backtrack = (board, row, col) => {
+    for (let i = row; i < board.length; ++i, col = 0) { // note: we should reset col here
+        for (let j = col; j < board[0].length; ++j) {
             if (board[i][j] !== '.') {
                 continue;
             }
             
             for (let num = 1; num <= 9; ++num) {
                 if (canPutNumber(board, i, j, num)) {
-                    putNumber(board, i, j, num);
+                    board[row][col] = num.toString();
                     
-                    if (backtrack(board)) {
+                    if (backtrack(board, i, j)) {
                         return true;
-                    } else {
-                        removeNumber(board, i, j)
                     }
+
+                    board[row][col] = '.';
                 }
             }
             
@@ -54,12 +54,4 @@ const canPutNumber = (board, row, col, num) => {
     }
     
     return true;
-}
-
-const putNumber = (board, row, col, num) => {
-    board[row][col] = num.toString();
-}
-
-const removeNumber = (board, row, col) => {
-    board[row][col] = '.';
 }
