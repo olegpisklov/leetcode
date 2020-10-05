@@ -18,13 +18,13 @@ const backtrack = (board, row, col) => {
             
             for (let num = 1; num <= 9; ++num) {
                 if (canPutNumber(board, i, j, num)) {
-                    board[row][col] = num.toString();
+                    board[i][j] = num.toString();
                     
                     if (backtrack(board, i, j)) {
                         return true;
                     }
 
-                    board[row][col] = '.';
+                    board[i][j] = '.';
                 }
             }
             
