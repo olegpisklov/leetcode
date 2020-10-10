@@ -44,7 +44,8 @@ var connectBFS = function(root) {
 var connect = function(root) {
     if (!root) return root;
     
-    // leftmost node of the current level, starts with root
+    // leftmost node of the current level, starts with root,
+    // we will iterate level by level
     let leftmost = root; 
     
     while (leftmost) {
@@ -52,7 +53,7 @@ var connect = function(root) {
         // while iterating through the current level, we will connect next level nodes
         let nextLevelPointer = null; 
         
-        // reset leftmost, we will find it later for the next iteration
+        // reset leftmost, we will set it later for the next iteration
         leftmost = null; 
         
         while (currentLevelPointer) {
@@ -83,4 +84,3 @@ var connect = function(root) {
     
     return root;
 }
-
