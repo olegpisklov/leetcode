@@ -19,3 +19,22 @@ var dailyTemperatures = function(T) {
   
     return res;
 };
+
+
+// going backwards
+var dailyTemperatures = function(T) {
+    const stack = [];
+    const result = new Array();
+    
+    for (let i = T.length - 1; i >= 0; --i) {
+        while (stack.length && T[i] >= stack[stack.length - 1].val) {
+            stack.pop();
+        }
+        
+        result[i] = stack.length ? stack[stack.length - 1].index - i : 0;    
+        
+        stack.push({val: T[i], index: i}); // we can push only index
+    }
+    
+    return result;
+}
