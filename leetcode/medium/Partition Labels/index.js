@@ -13,21 +13,18 @@ var partitionLabels = function(S) {
         }
     }
     
-    let limit = 0;
-    let prevLimit = -1;
+    let right = 0;
+    let left = 0;
     const result = [];
     
     for (let i = 0; i < S.length; ++i) {
-        if (i > limit) {
-            result.push(limit - prevLimit);
-            prevLimit = limit;
-            limit = indexesMap[S[i]];
-        } else {
-            limit = Math.max(limit, indexesMap[S[i]])
+        right = Math.max(right, indexesMap[S[i]])
+        
+        if (i === right) {
+            result.push(right - left + 1);
+            left = right + 1;
         }
     }
     
-    result.push(limit - prevLimit);
-
     return result;
 };
