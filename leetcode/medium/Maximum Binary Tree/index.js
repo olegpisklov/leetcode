@@ -11,6 +11,27 @@
  * @return {TreeNode}
  */
 var constructMaximumBinaryTree = function(nums) {
+    const stack = [];
+    
+    for (let i = 0; i < nums.length; ++i) {
+        const node = new TreeNode(nums[i]);
+        
+        while (stack.length && stack[stack.length - 1].val < nums[i]) {
+            node.left = stack.pop();
+        }
+        
+        if (stack.length) {
+            stack[stack.length - 1].right = node;
+        }
+        
+        stack.push(node);
+    }
+    
+    return stack[0];
+}
+
+
+var constructMaximumBinaryTree = function(nums) {
     if (!nums || !nums.length) {
         return null;
     }
