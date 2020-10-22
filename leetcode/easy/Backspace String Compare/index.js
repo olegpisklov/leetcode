@@ -1,47 +1,43 @@
+/**
+ * @param {string} S
+ * @param {string} T
+ * @return {boolean}
+ */
 var backspaceCompare = function(s1, s2) {
     let p1 = s1.length - 1;
     let p2 = s2.length - 1;
 
-    let sharpCounter1 = 0;
-    let sharpCounter2 = 0;
-
     while (p1 >= 0 || p2 >= 0) {
-        // move first pointer until we can, up to the letter or -1
-        while (p1 >= 0) {
-            if (s1[p1] === '#') {
-                ++sharpCounter1;
-                --p1;
-            } else if (sharpCounter1 > 0) {
-                --p1;
-                --sharpCounter1;
-            } else {
-                break;
-            }
-        }
+        p1 = movePointerBack(s1, p1);
+        p2 = movePointerBack(s2, p2);
 
-        // move second pointer until we can, up to the letter or -1
-        while (p2 >= 0) {
-            if (s2[p2] === '#') {
-                ++sharpCounter2;
-                --p2;
-            } else if (sharpCounter2 > 0) {
-                --p2;
-                --sharpCounter2;
-            } else {
-                break;
-            }
-        }
-
-        if (s1[p1] === s2[p2] && s2[p2] !== '#') {
-            --p1;
-            --p2;
-        } else {
+        if (s1[p1] !== s2[p2]) {
             return false;
         }
+        
+        --p1;
+        --p2;
     }
 
     return true;
 };
+
+// move pointer back as far as we can to the left
+const movePointerBack = (str, ind) => {
+    let sharpCounter = 0;
+    
+    while (str[ind] === '#' || sharpCounter > 0) {
+        if (str[ind] === '#') {
+            ++sharpCounter;
+            --ind;
+        } else if (sharpCounter > 0) {
+            --ind;
+            --sharpCounter;
+        }
+    }
+    
+    return ind;
+}
 
 console.log(backspaceCompare('ab#c', 'ad#c')); // true
 console.log(backspaceCompare('ab##', 'c#d#')); // true
