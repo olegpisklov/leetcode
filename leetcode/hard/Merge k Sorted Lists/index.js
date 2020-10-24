@@ -87,5 +87,51 @@ var mergeKLists = function(lists) { // MinHeap approach
     return head.next;
 }
 
+var mergeKLists = function(lists) { // O(1) space
+    if (!lists || !lists.length) {
+        return null;
+    }
+    if (lists.length === 1) {
+        return lists[0];
+    }
+    
+    let interval = 1;
+    
+    while (interval < lists.length) {
+        for (let i = 0; i < lists.length - interval; i += interval * 2) {
+            lists[i] = mergeTwoLists(lists[i], lists[i + interval]);
+        }
+        
+        interval *= 2;
+    }
+    
+    return lists[0];
+}
+
+// 1 -> 2 -> 3 -> 8
+// 4 -> 5 -> 9
+
+const mergeTwoLists = (l1, l2) => {
+    let p1 = l1;
+    let p2 = l2;
+    
+    let resultHead = new ListNode();
+    let resPointer = resultHead;
+    
+    while (p1 && p2) {
+        if (p1.val < p2.val) {
+            resPointer.next = p1;
+            p1 = p1.next;
+        } else {
+            resPointer.next = p2;
+            p2 = p2.next;        
+        }
+        resPointer = resPointer.next;
+    }
+    
+    resPointer.next = p1 || p2;
+    
+    return resultHead.next;
+}
 
 

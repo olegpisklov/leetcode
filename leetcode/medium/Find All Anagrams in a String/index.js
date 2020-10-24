@@ -4,7 +4,71 @@
  * @return {number[]}
  */
 
+//           ^
+//         ^
+// "cbaebabacd"
+// "abc"
+
+// a: 1
+// b: 0
+// c: 0
+
+// counter: 1
+// result: [0, 6]
+
+// O(s + p)
 var findAnagrams = function(s, p) {
+    const pCounts = {};
+    
+    for (let i = 0; i < p.length; ++i) {
+        const char = p[i];
+        
+        pCounts[char] = pCounts[char] === undefined ? 1 : pCounts[char] + 1;
+    }
+    
+    const result = [];
+    let counter = Object.keys(pCounts).length;
+    
+    let left = 0;
+    let right = 0;
+    
+    while (right < s.length) {
+        const char = s[right];
+        
+        if (pCounts[char] !== undefined) {
+            --pCounts[char];
+            
+            if (pCounts[char] === 0) {
+                --counter;
+            }
+        }
+        
+        ++right;
+        
+        while (counter === 0) {
+            if (right - left === p.length) {
+                result.push(left);
+            }
+            
+            const leftChar = s[left];
+            
+            if (pCounts[leftChar] !== undefined) {
+                ++pCounts[leftChar];
+
+                if (pCounts[leftChar] > 0) {
+                    ++counter;
+                }
+            }
+            
+            ++left;
+        }
+    }
+    
+    return result;
+}
+
+// O(s * p)
+var findAnagramsMy = function(s, p) {
     const pCounts = {};
     
     for (let i = 0; i < p.length; ++i) {
