@@ -5,26 +5,24 @@ const main = (root) => {
 
 const helper = (node) => {
     if (!node) {
-        return {isBst: true, size: 0, min: Number.MAX_SAFE_INTEGER, max: Number.MIN_SAFE_INTEGER};
+        return {size: 0, min: Number.MAX_SAFE_INTEGER, max: Number.MIN_SAFE_INTEGER};
     }
     if (!node.left && !node.right) {
-        return {isBst: true, size: 1, min: node.val, max: node.val};
+        return {size: 1, min: node.val, max: node.val};
     }
 
     const leftInfo = helper(node.left);
     const rightInfo = helper(node.right);
 
-    const isBst = leftInfo.isBst && rightInfo.isBst && node.val > leftInfo.max && node.val < rightInfo.min;
+    const isBst = node.val > leftInfo.max && node.val < rightInfo.min;
 
     const res = {};
 
     if (isBst) {
-        res.isBst = true;
-        res.min = Math.min(node.val, Math.min(leftInfo.min, rightInfo.min));
-        res.max = Math.max(node.val, Math.max(leftInfo.max, rightInfo.max));
+        res.min = Math.min(node.val, leftInfo.min);
+        res.max = Math.max(node.val, leftInfo.max);
         res.size = leftInfo.size + rightInfo.size + 1;
     } else {
-        res.isBst = false;
         res.min = 0;
         res.max = 0;
         res.size = Math.max(leftInfo.size, rightInfo.size);
