@@ -2,6 +2,51 @@
  * @param {number[]} height
  * @return {number}
  */
+var trap = function(height) {
+    const max = getMaxIndex(height);
+    
+    let sum = 0;
+    let peak = 0; // track current peak
+    
+    // go from left to the max index
+    for (let i = 0; i < max; ++i) {
+        if (height[i] < peak) {
+            sum += peak - height[i];
+        } else {
+            peak = height[i];
+        }
+    }
+    
+    peak = 0;
+
+    // go from right to the max index
+    for (let i = height.length - 1; i > max; --i) {
+        if (height[i] < peak) {
+            sum += peak - height[i];
+        } else {
+            peak = height[i];
+        }
+    }
+    
+    return sum;
+}
+
+const getMaxIndex = (nums) => {
+    let max = nums[0];
+    let ind = 0;
+    
+    for (let i = 0; i < nums.length; ++i) {
+        if (max <= nums[i]) {
+            max = nums[i];
+            ind = i;
+        }
+    }
+    
+    return ind;
+}
+
+
+
 var trapBrut = function(height) {
     let res = 0;
     

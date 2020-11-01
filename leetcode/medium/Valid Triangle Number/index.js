@@ -2,26 +2,29 @@
  * @param {number[]} nums
  * @return {number}
  */
-// [2,2,3,4]
+// [2,2,3,4] - sort
+// k < j < i ==> i + k > j, j + i > k
+// find k + j > i
 
 var triangleNumber = function(nums) {
     nums.sort((a, b) => a - b);
     
     let counter = 0;
     
-    for (let i = 0; i < nums.length - 2; ++i) {
-        if (nums[i] === 0) continue;
+    for (let i = nums.length - 1; i > 1; --i) {
+        let j = i - 1;
+        let k = 0;
         
-        let k = i + 2;
-
-        for (let j = i + 1; j < nums.length - 1; ++j) {
-            while(k < nums.length && nums[i] + nums[j] > nums[k]) {
+        while (k < j) {
+            if (nums[k] + nums[j] > nums[i]) {
+                counter += j - k;
+                --j;
+            } else {
                 ++k;
             }
-            counter += k - j - 1;
         }
     }
-    
+        
     return counter;
 }
 

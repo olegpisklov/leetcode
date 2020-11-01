@@ -2,6 +2,51 @@
  * @param {number[][]} intervals
  * @return {number}
  */
+var minMeetingRooms = function(intervals) {
+    intervals.sort((a, b) => a[0] - b[0]);
+
+    const heap = new Heap();
+
+    for (let i = 0; i < intervals.length; ++i) {
+        if (!heap.isEmpty() && heap.peek()[1] <= intervals[i][0]) {
+            heap.pop();
+        } 
+            
+        heap.add(intervals[i]);
+    }
+
+    return heap.length;
+}
+
+class MinHeap {
+    add() {}
+    pop() {}
+    peek() {}
+    isEmpty() {}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var minMeetingRoomsM = function(intervals) {
     if (!intervals || !intervals.length) {
         return 0;   
