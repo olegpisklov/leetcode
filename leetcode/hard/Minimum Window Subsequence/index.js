@@ -3,7 +3,65 @@
  * @param {string} T
  * @return {string}
  */
-var minWindow = function(S, T) {
+// S = "abcdebdde", T = "bde"
+// Output: "bcde"
+
+
+const  minWindow = function(S, T) {
+    const closestIndexes = getClosestIndexes(S);
+    let startInd = 0;
+    let minLen = Number.MAX_SAFE_INTEGER;
+
+    for (let i = 0; i < S.length; ++i) {
+        if (S[i] !== T[0]) continue;
+
+        if (i > S.length - T.length + 1) {
+            break;
+        }
+
+        closestInd = closestIndexes[i];
+
+        let start = i;
+        let end = -1;
+
+        for (let j = 1; j < T.length; ++j) {
+            const char = T[j];
+
+            if (closestInd[char] === undefined) {
+                end = -1;
+                break;
+            }
+
+            end = closestInd[char];
+        }
+
+        if (end - start + 1 < minLen) { 
+            startInd = start;
+            minLen = end - start + 1;
+        }
+    }
+
+    return S.substring(startInd, startInd + minLen);
+}
+
+const getClosestIndexes = (str) => {
+    const arr = new Array(str.length);
+    const map = {};
+
+    for (let i = str.length - 1; i >= 0; --i) {
+        map[str[i]] = i;
+        arr[i] = {...map};
+    }
+
+    return arr;
+}
+
+
+console.log(minWindow("abcdebdde", "bde"));
+
+
+
+var minWindowOld = function(S, T) {
     let minLen = Number.MAX_SAFE_INTEGER;
     let res = '';
     
