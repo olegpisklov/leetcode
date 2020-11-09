@@ -42,7 +42,7 @@ class MaxHeap {
         return max;
     }
 
-    less(ind1, ind2) {
+    less(ind1, ind2) { // for MinHeap use "greater" instead
         ind1 = Math.floor(ind1);
         ind2 = Math.floor(ind2);
 
