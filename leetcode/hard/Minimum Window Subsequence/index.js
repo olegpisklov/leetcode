@@ -6,6 +6,17 @@
 // S = "abcdebdde", T = "bde"
 // Output: "bcde"
 
+[
+    {a: 0, c: 2, b: 1, d: 3, e: 4},
+    {c: 2, b: 1, d: 3, e: 4},
+    {c: 2, b: 5, d: 3, e: 4},
+    {b: 5, d: 3, e: 4},
+    {b: 5, d: 6, e: 4},
+    {b: 5, d: 6, e: 8},
+    {d: 6, e: 8},
+    {d: 7, e: 8},
+    {e: 8}
+]
 
 const  minWindow = function(S, T) {
     const closestIndexes = getClosestIndexes(S);

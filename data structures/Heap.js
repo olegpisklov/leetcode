@@ -59,7 +59,7 @@ class MaxHeap {
         this.pq[ind2] = temp;
     }
 }
-
+/**
 const heap = new MaxHeap();
 
 heap.insert(3);
@@ -88,3 +88,74 @@ console.log(heap.pq);
 
 console.log(heap.delMax());
 console.log(heap.pq);
+
+*/
+
+class Heap {
+    constructor(comparator) {
+        this.pq = [null];
+        this.comparator = comparator;
+    }
+
+    insert(key) {
+        this.pq.push(key);
+        this.swim(this.pq.length - 1);
+    }
+
+    swim(k) {
+        while(k > 1 && this.compare(k/2, k)) {
+            this.swap(k/2, k);
+            k = Math.floor(k/2);
+        }
+    }
+
+    sink(k) {
+        while(2*k < this.pq.length) {
+            let j = 2*k;
+
+            if (this.compare(j, j + 1)) {
+                ++j;
+            }
+            if (!this.compare(k, j)) {
+                break;
+            }
+
+            this.swap(k, j);
+
+            k = j;
+        }
+    }
+
+    delTop() {
+        const max = this.pq[1];
+
+        this.swap(1, this.pq.length - 1);
+        this.pq.pop();
+        this.sink(1);
+
+        return max;
+    }
+
+    compare(ind1, ind2) {
+        ind1 = Math.floor(ind1);
+        ind2 = Math.floor(ind2);
+
+        return this.comparator(this.pq[ind1], this.pq[ind2]);
+    }
+
+    swap(ind1, ind2) {
+        ind1 = Math.floor(ind1);
+        ind2 = Math.floor(ind2);
+
+        const temp = this.pq[ind1];
+
+        this.pq[ind1] = this.pq[ind2];
+        this.pq[ind2] = temp;
+    }
+
+    getLength() {
+        return this.pq.length - 1;
+    }
+}
+
+module.exports = Heap;
