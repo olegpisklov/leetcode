@@ -14,11 +14,13 @@ Example 1:
 Input: {1,#,2,3,4}
 Output: [1,3,4,2]
 Explanation: 
+  ``` 
   1
    \
     2
    / \
   3   4
+  ```
   The root doesn't have left subtree, so the root itself is left boundary.
   The leaves are node 3 and 4.
   The right boundary are node 1,2,4. Note the anti-clockwise direction means you should output reversed right boundary.
@@ -28,6 +30,7 @@ Example 2:
 Input: {1,2,3,4,5,6,#,#,#,7,8,9,10}
 Output: [1,2,4,7,8,9,10,6,3]
 Explanation: 
+```
           1
      /          \
     2            3
@@ -35,6 +38,7 @@ Explanation:
   4   5        6   
      / \      / \
     7   8    9  10  
+  ```
   The left boundary are node 1,2,4. (4 is the left-most node according to definition)
   The leaves are node 4,7,8,9,10.
   The right boundary are node 1,3,6,10. (10 is the right-most node).
