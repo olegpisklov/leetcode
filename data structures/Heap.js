@@ -103,17 +103,19 @@ class Heap {
     }
 
     swim(k) {
-        while(k > 1 && this.compare(k/2, k)) {
+        while (k > 1 && this.compare(k/2, k)) {
             this.swap(k/2, k);
             k = Math.floor(k/2);
         }
     }
 
     sink(k) {
-        while(2*k < this.pq.length) {
+        const len = this.pq.length;
+
+        while (2*k < len) {
             let j = 2*k;
 
-            if (this.compare(j, j + 1)) {
+            if (j + 1 < len && this.compare(j, j + 1)) {
                 ++j;
             }
             if (!this.compare(k, j)) {
