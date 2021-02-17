@@ -30,6 +30,6 @@ const helper = (staff, ind, money, memo) => {
 
 console.log(getNumberOfOptions([2, 3], [4], [2, 3], [1, 2], 10));
 
-// Time: worst case is when we have a lot of money, so the result will be any possible combination of cloths:
+// Time: worst case is when we have a lot of money, so the result will be any possible combination of clothes:
 // O(a*b*c*d) where a, b, c and d are the sizes of the four price arrays
-// Space: O(M) where M is the money
+// Space: O(M) where M is the amount of money
