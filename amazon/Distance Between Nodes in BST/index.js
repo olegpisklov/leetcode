@@ -47,11 +47,28 @@ const insertToBST = (root, val) => {
     return root;
 }
 
-const findLCA = (root, p, q) => {
+var lowestCommonAncestor = function(root, p, q) { // O(1) space
+    let cur = root;
+    
+    while (cur !== null) {
+        if (cur.val > p.val && cur.val > q.val) {
+            cur = cur.left;
+        } else if (cur.val < p.val && cur.val < q.val) {
+            cur = cur.right;
+        } else {
+            return cur;
+        }
+    }
+    
+    return null;
+}
+
+
+const findLCA = (root, p, q) => { // O(n) space
     if (root.val > p.val && root.val > q.val) {
-        return lowestCommonAncestor(root.left, p, q);
+        return findLCA(root.left, p, q);
     } else if (root.val < p.val && root.val < q.val) {
-        return lowestCommonAncestor(root.right, p, q);
+        return findLCA(root.right, p, q);
     } else {
         return root;
     }

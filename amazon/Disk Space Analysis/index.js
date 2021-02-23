@@ -1,5 +1,5 @@
 const main = (n, hardDisksSpace, windowSize) => {
-    let maxMin = -1;
+    let result = 0;
     let q = [];
 
     for (let i = 0; i < hardDisksSpace.length; ++i) {
@@ -15,17 +15,18 @@ const main = (n, hardDisksSpace, windowSize) => {
         q.push(i);
 
         if (i >= (windowSize - 1)) {
-            maxMin = Math.max(maxMin, hardDisksSpace[q[0]]);
+            result = Math.max(result, hardDisksSpace[q[0]]);
         }
     }
 
-    return maxMin;
+    return result;
 }
+
 
 // Time: O(n), Space: O(k)
 
 console.log(main(3, [8,2,4], 2));
-
+console.log(main(3, [8,2,4,5], 2));
 console.log(main(6, [8,2,4,3,7,6], 2));
 console.log(main(6, [8,2,4,3,7,6], 3));
 console.log(main(7, [2,4,3,7,8,6,5], 4)); 2, 3, 3, 5
