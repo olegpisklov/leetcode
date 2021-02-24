@@ -1,4 +1,5 @@
 // https://www.geeksforgeeks.org/closest-pair-of-points-using-divide-and-conquer-algorithm/
+// https://aonecode.com/interview-question/squared-shortest-distance
 
 const main = (points) => {
     points.sort((a, b) => a[0] - b[0]);
