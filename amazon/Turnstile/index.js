@@ -16,11 +16,8 @@ const main = (n, times, directions) => {
     const enterQueue = [];
 
     for (let i = 0; i < n; ++i) {
-        if (directions[i] === 1) {
-            exitQueue.push(i);
-        } else {
-            enterQueue.push(i);
-        }
+        const q = directions[i] === DIRECTIONS.exit ? exitQueue : enterQueue;
+        q.push(i);
     }
 
     const turnstile = new Turnstile(n);
@@ -28,8 +25,8 @@ const main = (n, times, directions) => {
     while (exitQueue.length !== 0 && enterQueue.length !== 0) {
         const exitIndex = exitQueue[0];
         const enterIndex = enterQueue[0];
-        const exitTime = Math.max(turnstile.currentTime, times[exitIndex]);
-        const enterTime = Math.max(turnstile.currentTime, times[enterIndex]);
+        const exitTime = Math.max(turnstile.prevTime + 1, times[exitIndex]);
+        const enterTime = Math.max(turnstile.prevTime + 1, times[enterIndex]);
 
         if (exitTime > enterTime) {
             turnstile.go(enterIndex, enterTime, DIRECTIONS.enter);
@@ -38,10 +35,10 @@ const main = (n, times, directions) => {
             turnstile.go(exitIndex, exitTime, DIRECTIONS.exit);
             exitQueue.shift();
         } else {
-            if (turnstile.currentTime + 1 < exitTime || turnstile.prevDirection === null) { // previous second was not used
+            if (turnstile.prevTime + 1 < exitTime || turnstile.prevDirection === null) { // previous second was not used
                 turnstile.go(exitIndex, exitTime, DIRECTIONS.exit);
                 exitQueue.shift();
-            } else if (turnstile.prevDirection === 1) {
+            } else if (turnstile.prevDirection === DIRECTIONS.exit) {
                 turnstile.go(exitIndex, exitTime, DIRECTIONS.exit);
                 exitQueue.shift();
             } else {
@@ -53,14 +50,14 @@ const main = (n, times, directions) => {
 
     while (exitQueue.length !== 0) {
         const index = exitQueue.shift();
-        const time = Math.max(turnstile.currentTime, times[index]);
+        const time = Math.max(turnstile.prevTime + 1, times[index]);
 
         turnstile.go(index, time, DIRECTIONS.exit);
     }
 
     while (enterQueue.length !== 0) {
         const index = enterQueue.shift();
-        const time = Math.max(turnstile.currentTime, times[index]);
+        const time = Math.max(turnstile.prevTime + 1, times[index]);
 
         turnstile.go(index, time, DIRECTIONS.enter);
     }
@@ -72,11 +69,11 @@ class Turnstile {
     constructor(capacity) {
         this.records = new Array(capacity); // it's possible to implement without capacity using hashmap
         this.prevDirection = null;
-        this.currentTime = 0;
+        this.prevTime = -1;
     }
     go(customerIndex, time, direction) {
         this.records[customerIndex] = time;
-        this.currentTime = time + 1;
+        this.prevTime = time;
         this.prevDirection = direction;
     }
 }
@@ -84,3 +81,7 @@ class Turnstile {
 console.log(main(5, [0,1,1,3,3], [0,1,0,0,1]));
 
 // Time: O(n) Space: O(n)
+
+console.log(main(4, [0, 0, 1, 6], [0, 1, 1, 0]));
+console.log(main(4, [1, 1, 2, 6], [0, 1, 1, 0])); // [3,1,2,6]
+console.log(main(5, [1,2,2,4,4], [0, 1, 0, 0, 1])); // [1, 3, 2, 5, 4]
