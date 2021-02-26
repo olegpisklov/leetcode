@@ -4,40 +4,28 @@
  * @return {string}
  */
 var mostCommonWord = function(paragraph, banned) {
-    const frequencyMap = createWordsFrequencyMap(paragraph);
-    for (let i = 0; i < banned.length; ++i) {
-        if (frequencyMap[banned[i]] !== undefined) {
-            delete frequencyMap[banned[i]];
-        }
-    }
-    const frequencyArr = [];
-    const keys = Object.keys(frequencyMap);
-    
-    for (let i = 0; i < keys.length; ++i) {
-        frequencyArr.push([keys[i], frequencyMap[keys[i]]]);
-    }
-    
-    frequencyArr.sort((a, b) => b[1] - a[1]);
-
-    return frequencyArr[0][0];
-    
-};
-
-const createWordsFrequencyMap = (str) => {
-    const lower = str.toLowerCase();
+    const bannedSet = new Set(banned);
+    const strArr = paragraph.toLowerCase().replace(/[^a-z]/g, ' ').split(' ');
     const map = {};
-    const strArr = lower.split(/[ !?',;.]+/);
-    const specialSymbols = ['!', '?', "'", ';', '.', ','];
+    let maxFreq = 0;
+    let maxFreqWord = '';
     
     for (let i = 0; i < strArr.length; ++i) {
         let word = strArr[i];
         
-        if (map[word] !== undefined) {
-            map[word] += 1;
-        } else {
-            map[word] = 1;
+        if (word === '' || bannedSet.has(word)) continue;
+        
+        if (map[word] === undefined) {
+            map[word] = 0;
+        }
+        
+        map[word] += 1;
+        
+        if (map[word] > maxFreq) {
+            maxFreq = map[word];
+            maxFreqWord = word;
         }
     }
     
-    return map;
+    return maxFreqWord;
 }
