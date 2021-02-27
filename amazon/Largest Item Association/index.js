@@ -1,50 +1,54 @@
 const main = (list) => {
-    const associatedMap = createAssociatedMap(list);
+    const graph = buildGraph(list);
 
-    const vertices = Object.keys(associatedMap);
-    const groupsBySize = {};
-    let maxGroupSize = 0;
+    const visited = new Set();
+    const groups = [];
 
-    for (let i = 0; i < vertices.length; ++i) {
-        const vertex = vertices[i];
+    for (let vertex in graph) {
         const group = [];
 
-        dfs(associatedMap, vertex, new Set(), group);
+        dfs(graph, vertex, visited, group);
 
-        maxGroupSize = Math.max(group.length, maxGroupSize);
-
-        if (groupsBySize[group.length] !== undefined) {
-            groupsBySize[group.length].push(group);
-        } else {
-            groupsBySize[group.length] = [group];
-        }
+        group.sort(sortGroupComparator);
+        groups.push(group);
     }
 
-    const maxGroups = groupsBySize[maxGroupSize];
+    groups.sort(sortMaxGroupsComparator);
 
-    sortMaxGroups(maxGroups);
+    return groups[0];
+}
 
-    return maxGroups[0];
+const sortGroupComparator = (a, b) => {
+    if (a < b) {
+        return -1;
+    }
+    if (a > b) {
+        return 1;
+    }
+    return 0;
 }
 
 // Time: E + V * log(V) - where E - number of edges, V - number of vertices
 // Space: E + V
 
-const sortMaxGroups = (groups) => {
-    groups.sort((a, b) => {
-        let result = 0;
+// https://github.com/Qiaowei2333/leetcode/blob/d437d4c7d3c4d9895b4fa7d236f9fd0c6a214f5a/algorithms/yama/11/08/LargestItemAssociation.java
+// time O(v*e*loge + k * log k) e: edges, v: vertex, k: # of connected components
+// space o(v + e)
+const sortMaxGroupsComparator = (a, b) => {
+    if (a.length !== b.length) {
+        return b.length - a.length;
+    }
 
-        for (let i = 0; i < a.length && result === 0; ++i) {
-            if (a[i] < b[i]) {
-                result = -1;
-            }
-            if (a[0] > b[0]) {
-                result = 1;
-            }
+    for (let i = 0; i < a.length; ++i) {
+        if (a[i] === b[i]) continue;
+
+        if (a[i] < b[i]) {
+            return -1;
         }
-        
-        return result;
-    });
+        if (a[0] > b[0]) {
+            return 1;
+        }
+    }
 }
 
 const dfs = (graph, current, visited, result) => {
@@ -55,32 +59,30 @@ const dfs = (graph, current, visited, result) => {
     visited.add(current);
     result.push(current);
 
-    const neighbours = graph[current];
-
-    for (let i = 0; i < neighbours.length; ++i) {
-        dfs(graph, neighbours[i], visited, result);
-    }
+    graph[current].forEach(neighbour => {
+        dfs(graph, neighbour, visited, result);
+    });
 }
 
 
-const createAssociatedMap = (list) => {
-    const associatedMap = {};
+const buildGraph = (list) => {
+    const graph = {};
 
     for (let i = 0; i < list.length; ++i) {
         const [firstVertex, secondVertex] = list[i];
 
-        if (associatedMap[firstVertex] !== undefined) {
-            associatedMap[firstVertex].push(secondVertex);
-        } else {
-            associatedMap[firstVertex] = [secondVertex];
+        if (graph[firstVertex] === undefined) {
+            graph[firstVertex] = [];
+        }
+        if (graph[secondVertex] === undefined) {
+            graph[secondVertex] = [];
         }
 
-        if (associatedMap[secondVertex] === undefined) {
-            associatedMap[secondVertex] = [];
-        }
+        graph[firstVertex].push(secondVertex);
+        // graph[secondVertex].push(firstVertex);
     }
 
-    return associatedMap;
+    return graph;
 }
 
 console.log(main([
@@ -104,3 +106,13 @@ console.log(main([
     ['item5', 'item6'],
     ['item3', 'item7']
 ]))
+console.log(main([
+                ["Item1", "Item2"],
+                ["Item2", "Item8"],
+                ["Item2", "Item10"],
+                ["Item10", "Item12"],
+                ["Item10", "Item4"],
+                ["Item10", "Item3"],
+                ["Item3", "Item4"],
+                ["Item4", "Item5"]
+            ]))
