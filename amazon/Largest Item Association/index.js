@@ -1,6 +1,5 @@
 const main = (list) => {
     const graph = buildGraph(list);
-
     const visited = new Set();
     const groups = [];
 
