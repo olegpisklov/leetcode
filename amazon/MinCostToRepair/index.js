@@ -21,7 +21,7 @@ class UnionFind {
         }
     }
 
-    getCommponenstNumber() {
+    getComponenstNumber() {
         return this.componentsNumber;
     }
 }
@@ -29,14 +29,12 @@ class UnionFind {
 const minCost = (n, edges, edgesToRepair) => {
     const uf = new UnionFind(n + 1);
     const brokenEdgesSet = new Set();
-
     const isInEdgesToRepair = ([u, v]) => {
         return brokenEdgesSet.has([u, v].toString()) || 
             brokenEdgesSet.has([v, u].toString());
     }
-    // since our edges are 1 based we'll have an extra "0" component.
-    const isAllConnected = () => uf.getCommponenstNumber() === 2;
-
+    // since our edges are 1-based, we'll have an extra "0" component.
+    const isAllConnected = () => uf.getComponenstNumber() === 2;
 
     edgesToRepair.forEach(([u, v]) => {
         brokenEdgesSet.add([u, v].toString());
@@ -48,7 +46,7 @@ const minCost = (n, edges, edgesToRepair) => {
         }
     }
 
-    edgesToRepair.sort((a, b) => (a[2] - b[2]));
+    edgesToRepair.sort((a, b) => a[2] - b[2]);
 
     let res = 0;
 
@@ -61,6 +59,10 @@ const minCost = (n, edges, edgesToRepair) => {
 
     return isAllConnected() ? res : -1;
 }
+
+// Time: O(N + K * log(K)) where K is a number of broken endges OR  O(n*log(n))
+// Time: O(N)
+
 
 console.log(minCost(5, [[1, 2], [2, 3], [3, 4], [4, 5], [1, 5]], [[1, 2, 12], [3, 4, 30], [1, 5, 8]]));
 console.log(minCost(6, [[1, 2], [2, 3], [4, 5], [3, 5], [1, 6], [2, 4]], [[1, 6, 410], [2, 4, 800]]));
