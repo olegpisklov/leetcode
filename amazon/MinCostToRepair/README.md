@@ -23,3 +23,5 @@ Output: 79
 Related problems:
 
 Min Cost to Connect All Nodes
+
+https://leetcode.com/discuss/interview-question/356981/Amazon-or-OA-2019-or-Min-Cost-to-Connect-All-Nodes
