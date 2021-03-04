@@ -22,6 +22,9 @@ const helper = (x, y, k, visited) => {
     return counter;
 }
 
+// Time: O(k) ?
+// Space: O(k)
+
 console.log(main(0, 0, 1)); // 2
 console.log(main(0, 0, 2)); // 12
 

@@ -26,7 +26,7 @@ const helper = (node, sum) => {
 
     const currentSum = node.val + l + r;
     
-    sum.max = Math.max(sum.max, currentSum);
+    sum.max = Math.max(sum.max, currentSum);// take both branches for the result
     
-    return Math.max(l, r) + node.val;
+    return Math.max(l, r) + node.val; // since it's path, we can not choose both branches returning to the upper level
 }

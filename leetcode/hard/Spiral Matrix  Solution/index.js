@@ -45,3 +45,38 @@ var spiralOrder = function(matrix) {
     
     return res;
 };
+
+const main = (n) => {
+    const matrix = new Array(n).fill(0).map(i => new Array(n));
+    const dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+    let curDir = 0;
+    let i = 0;
+    let j = 0;
+    
+    for (let k = 0; k < n**2; ++k) {
+        matrix[i][j] = k + 1;
+
+        i += dirs[curDir][0];
+        j += dirs[curDir][1];
+
+        if (!isValid(i, j, matrix)) {
+            i -= dirs[curDir][0];
+            j -= dirs[curDir][1];
+
+            curDir = (curDir + 1) % 4;
+
+            i += dirs[curDir][0];
+            j += dirs[curDir][1];
+        }
+    }
+
+    return matrix;
+}
+
+const isValid = (i, j, matrix) => {
+    return i >= 0 && i < matrix.length && 
+        j >= 0 && j < matrix.length &&
+        matrix[i][j] === undefined;
+}
+
+console.log(main(3));

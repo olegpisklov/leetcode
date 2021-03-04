@@ -29,6 +29,7 @@ const findIntersection = (arr) => {
     return intersection;
 }
 
+
 class Trie {
     constructor() {
         this.map = {};
@@ -69,7 +70,6 @@ class Trie {
 
         return this.__search(node[term[ind]], term, ind + 1);
     }
-
 }
 
 console.log(prefixSearch(["burger king", "McDonald's", "super duper burger's", "subway", "pizza hut"], 'bur'));

@@ -1,10 +1,10 @@
 const main = (n, edges) => {
-    const adjMap = buildAdjacencyMap(n, edges);
+    const graph = buildGraph(n, edges);
 
     const visited = new Set();
-    const connectedCounts = [];
+    let sum = 0;
 
-    for (let key in adjMap) {
+    for (let key in graph) {
         const node = parseInt(key);
 
         if (visited.has(node)) continue;
@@ -20,20 +20,20 @@ const main = (n, edges) => {
             ++connectedNodesCount;
             visited.add(cur);
 
-            for (let i = 0; i < adjMap[cur].length; ++i) {
-                q.push(adjMap[cur][i]);
+            for (let i = 0; i < graph[cur].length; ++i) {
+                q.push(graph[cur][i]);
             }
         }
 
         if (connectedNodesCount !== 0) {
-            connectedCounts.push(connectedNodesCount);
+            sum += Math.ceil(Math.sqrt(connectedNodesCount));
         }
     }
 
-    return connectedCounts.reduce((acc, cur) => acc + Math.ceil(Math.sqrt(cur)), 0);
+    return sum;
 }
 
-const buildAdjacencyMap = (n, edges) => {
+const buildGraph = (n, edges) => {
     const map = {};
 
     for (let i = 0; i < n; ++i) {

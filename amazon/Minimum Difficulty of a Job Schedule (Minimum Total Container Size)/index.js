@@ -45,7 +45,7 @@ const helper = (jobDifficulty, d, ind, memo) => {
     return minSum;
 }
 
-// Time: O(n*d) Space: O(n*d)
+// Time: O(d * n^2) Space: O(n*d)
 
 console.log(minDifficulty([10, 2, 20, 5, 15, 10, 1], 3));
 console.log(minDifficulty([10, 2, 20, 5, 15, 10, 1], 5));
@@ -76,6 +76,8 @@ console.log(minDifficulty([22, 12, 1, 14, 17], 2));
     
     Input: jobDifficulty = [11,111,22,222,33,333,44,444], d = 6
     Output: 843
+
+    https://github.com/Qiaowei2333/leetcode/blob/d437d4c7d3c4d9895b4fa7d236f9fd0c6a214f5a/algorithms/yama/11/08/BetaTesting.java
  */
 
 console.log(minDifficulty([6,5,4,3,2,1], 2)); // 7
