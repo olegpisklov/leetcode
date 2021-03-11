@@ -41,11 +41,11 @@ let solveKnapsackBU = function(profits, weights, capacity) { // Bottom Up: O(n*m
       return memo[i][capacity];
     }
   
-    const profit1 = helper(profits, weights, capacity, i + 1, memo);
+    const profit1 = helper(profits, weights, capacity, i + 1, memo); // without cur weight
     let profit2 = 0;
   
     if (capacity >= weights[i]) {
-      profit2 = helper(profits, weights, capacity - weights[i], i + 1, memo) + profits[i];
+      profit2 = helper(profits, weights, capacity - weights[i], i + 1, memo) + profits[i]; // with cur weight
     }
   
     memo[i][capacity] = Math.max(profit1, profit2);
