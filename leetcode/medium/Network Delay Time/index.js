@@ -24,23 +24,23 @@ class Heap {
     }
 }
 
-// Dijkstra's algorithm: Time: O(n + Elogn), space: O(n + E), where E = edges.length.
+// Dijkstra's algorithm: Time: O(n + E*log(n)), space: O(n + E), where E = edges.length.
 var networkDelayTime = function(times, n, k) {
     const graph = buildGraph(times, n);
     const timeTo = new Array(n + 1).fill(Infinity);
-    const heap = new Heap((a, b) => a[1] - b[1]);
+    const minHeap = new Heap((a, b) => a[1] - b[1]);
     
     timeTo[k] = 0;
     
-    heap.add([k, 0]);
+    minHeap.add([k, 0]);
 
-    while (!heap.isEmpty()) {
-        const [from] = heap.removeTop();
+    while (!minHeap.isEmpty()) {
+        const [from] = minHeap.removeTop();
         
         graph[from].forEach(([to, time]) => {
             if (timeTo[to] > timeTo[from] + time) {
                 timeTo[to] = timeTo[from] + time;
-                heap.add([to, timeTo[to]]);
+                minHeap.add([to, timeTo[to]]);
             }
         });
     }

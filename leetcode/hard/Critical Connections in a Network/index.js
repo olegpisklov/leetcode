@@ -26,31 +26,31 @@ var criticalConnections = function(n, connections) {
         depthRank[nodeId] = depth;
         
         const neighbours = graph[nodeId];
-        let min = depth;
+        let minRank = depth;
         
         neighbours.forEach(nextId => {            
             // not the node we just visited
             if (parentId === nextId) return;
             
-            const cachedNextDepth = depthRank[nextId];
+            const cachedNextRank = depthRank[nextId];
 
-            if (cachedNextDepth !== undefined) {
-                min = Math.min(min, cachedNextDepth);
-                depthRank[nextId] = min;
+            if (cachedNextRank === undefined) {
+                const nextRank = dfs(nextId, depth + 1, nodeId);
+                minRank = Math.min(minRank, nextRank); 
             } else {
-                const nextDepth = dfs(nextId, depth + 1, nodeId);
-                min = Math.min(min, nextDepth); 
+                minRank = Math.min(minRank, cachedNextRank);
+                depthRank[nextId] = minRank;
             }
         });
         
-        depthRank[nodeId] = min;
+        depthRank[nodeId] = minRank;
         
-        return min;
+        return minRank;
     }
     
     dfs(connections[0][0], 0, null);
 
-    return connections.filter(([prev, next]) => depthRank[prev] !== depthRank[next]);
+    return connections.filter(([from, to]) => depthRank[from] !== depthRank[to]);
 };
 
 
