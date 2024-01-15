@@ -54,15 +54,7 @@ const selectMaxCapacity = (items, limit) => {
     	return [];
     }
   
-  	items.sort((a, b) => {
-    	if (a[0] < b[0]) {
-          return -1;
-        }
-        if (a[0] > b[0]) {
-          return 1;
-        }
-      	return a[1] - b[1];
-    });
+  	items.sort((a, b) => a[1] - b[1]);
   
 	const [fistGroup, secondGroup] = getGoupsByWeight(items); // [[[1,7], [1,10]], [[2,5], [2,6]]]]
   	const resultSubset = []; 
