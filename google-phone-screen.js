@@ -27,7 +27,7 @@ ALGO:
 * split the list into two groups by weight 1 and 2
 * sort both by value
 * pick two items from the top of the first group and one from the second
-* compare which is more efficient to take
+* compare which is more efficient to take - two from the first goup or one from the second
 
  */
 
