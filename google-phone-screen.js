@@ -24,9 +24,9 @@ DESIRED OUTPUT:
 
 
 ALGO:
-* split inot two groups by weight 1 and 2
+* split the list into two groups by weight 1 and 2
 * sort both by value
-* pick two items from the top if the first group and one from the second
+* pick two items from the top of the first group and one from the second
 * compare which is more efficient to take
 
  */
@@ -58,47 +58,47 @@ const selectMaxCapacity = (items, limit) => {
   
 	const [fistGroup, secondGroup] = getGoupsByWeight(items); // [[[1,7], [1,10]], [[2,5], [2,6]]]]
   	const resultSubset = []; 
-  	// let weight = 0;
     let currentValue = 0;
-  
-  	while (currentValue < limit && (fistGroup.length || secondGroup.length)) {
-		const pairOne = fistGroup.length ? fistGroup.pop() : null;
-		const pairTwo = fistGroup.length ? fistGroup.pop() : null;
-		const pairThree = secondGroup.length ? secondGroup.pop() : null;
 
-		if (pairOne && pairTwo && pairThree && currentValue + 2 <= limit) {
+	while (currentValue < limit) {
+		const pairOne = fistGroup.length ? fistGroup[fistGroup.length - 1] : null;
+		const pairTwo = fistGroup.length > 1 ? fistGroup[fistGroup.length - 2] : null;;
+		const pairThree = secondGroup.length ? secondGroup[secondGroup.length - 1] : null;
+
+		if (currentValue + 1 === limit) {
+			if (pairOne) resultSubset.push(fistGroup.pop());
+			return resultSubset;
+		}
+
+		if (pairOne && pairTwo && pairThree) {
 			if (pairOne[1] + pairTwo[1] > pairThree[1]) {
-				resultSubset.push(pairOne);
-				resultSubset.push(pairTwo);
-				secondGroup.push(pairThree)
+				resultSubset.push(fistGroup.pop());
+				resultSubset.push(fistGroup.pop());
 			} else {
-				resultSubset.push(pairThree)
-				fistGroup.push(pairOne);
-				fistGroup.push(pairTwo);
+				resultSubset.push(secondGroup.pop());
 			}
 			currentValue += 2;
-		} else if (pairOne && pairThree && currentValue + 2 <= limit) {
+		} else if (pairOne && pairTwo) {
+			resultSubset.push(fistGroup.pop());
+			currentValue += 1;
+		} else if (pairOne && pairThree) {
 			if (pairOne[1] > pairThree[1]) {
-				resultSubset.push(pairOne);
-				secondGroup.push(pairThree)
+				resultSubset.push(fistGroup.pop());
 				currentValue += 1;
 			} else {
-				resultSubset.push(pairThree)
-				fistGroup.push(pairOne);
+				resultSubset.push(secondGroup.pop())
 				currentValue += 2;
 			}
-		} else if (pairOne && !pairThree) {
-			resultSubset.push(pairOne);
+		} else if (pairOne) {
+			resultSubset.push(fistGroup.pop());
 			currentValue += 1;
-		} else if (!pairOne && pairThree && currentValue + 2 <= limit) {
-			resultSubset.push(pairThree);
+		} else if (pairThree) {
+			resultSubset.push(secondGroup.pop());
 			currentValue += 2;
-		} else if (!pairOne && currentValue + 1 == limit) {
-			return resultSubset;
 		}
 	}
 
 	return resultSubset;
 }
 
-console.log(selectMaxCapacity([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 4 ))
+console.log(selectMaxCapacity([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 3 ))
