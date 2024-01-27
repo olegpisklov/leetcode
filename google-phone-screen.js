@@ -61,7 +61,7 @@ const selectMaxCapacity = (items, weightLimit) => {
   	const resultSubset = []; 
     let currentWeight = 0;
 
-	while (currentWeight < weightLimit) {
+	while (currentWeight < weightLimit && (fistGroup.length || secondGroup.length)) {
 		const pairOne = fistGroup.length ? fistGroup[fistGroup.length - 1] : null;
 		const pairTwo = fistGroup.length > 1 ? fistGroup[fistGroup.length - 2] : null;;
 		const pairThree = secondGroup.length ? secondGroup[secondGroup.length - 1] : null;
@@ -102,4 +102,4 @@ const selectMaxCapacity = (items, weightLimit) => {
 	return resultSubset;
 }
 
-console.log(selectMaxCapacity([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 3 ))
+console.log(selectMaxCapacity([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 5 ))
