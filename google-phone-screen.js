@@ -46,26 +46,27 @@ const getGoupsByWeight = (items) => {
 	return [first, second];
 }
 
-const selectMaxCapacity = (items, limit) => {
-	if (items === undefined || limit === undefined) {
+const selectMaxCapacity = (items, weightLimit) => {
+	if (items === undefined || weightLimit === undefined) {
       	throw new Error('Invalid argument');
     }
-  	if (items.length === 0 || limit === 0) {
+  	if (items.length === 0 || weightLimit === 0) {
     	return [];
     }
   
+	// sort by value
   	items.sort((a, b) => a[1] - b[1]);
   
 	const [fistGroup, secondGroup] = getGoupsByWeight(items); // [[[1,7], [1,10]], [[2,5], [2,6]]]]
   	const resultSubset = []; 
-    let currentValue = 0;
+    let currentWeight = 0;
 
-	while (currentValue < limit) {
+	while (currentWeight < weightLimit) {
 		const pairOne = fistGroup.length ? fistGroup[fistGroup.length - 1] : null;
 		const pairTwo = fistGroup.length > 1 ? fistGroup[fistGroup.length - 2] : null;;
 		const pairThree = secondGroup.length ? secondGroup[secondGroup.length - 1] : null;
 
-		if (currentValue + 1 === limit) {
+		if (currentWeight + 1 === weightLimit) {
 			if (pairOne) resultSubset.push(fistGroup.pop());
 			return resultSubset;
 		}
@@ -77,24 +78,24 @@ const selectMaxCapacity = (items, limit) => {
 			} else {
 				resultSubset.push(secondGroup.pop());
 			}
-			currentValue += 2;
+			currentWeight += 2;
 		} else if (pairOne && pairTwo) {
 			resultSubset.push(fistGroup.pop());
-			currentValue += 1;
+			currentWeight += 1;
 		} else if (pairOne && pairThree) {
 			if (pairOne[1] > pairThree[1]) {
 				resultSubset.push(fistGroup.pop());
-				currentValue += 1;
+				currentWeight += 1;
 			} else {
 				resultSubset.push(secondGroup.pop())
-				currentValue += 2;
+				currentWeight += 2;
 			}
 		} else if (pairOne) {
 			resultSubset.push(fistGroup.pop());
-			currentValue += 1;
+			currentWeight += 1;
 		} else if (pairThree) {
 			resultSubset.push(secondGroup.pop());
-			currentValue += 2;
+			currentWeight += 2;
 		}
 	}
 
