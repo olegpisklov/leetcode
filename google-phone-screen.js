@@ -1,21 +1,15 @@
 /**
 GIVEN INPUT:
-* Set of items. Each item is associated with a weight of either 1 or 2 and a value - an arbitrary positive value.
+* Set of items. Each item is associated with a weight of either 1 or 2, and a value - an arbitrary positive value.
 * Total capacity C.
 DESIRED OUTPUT:
 * Subset of items from input so that
   * total weight does not exceed capacity C.
   * total value of selected items is maximized.
-								                 ^           ^
-[[1, 10], [2, 5], [1, 7], [2, 6]] 4  [[1, 10], [1, 7]],  [[2,6], [2,5]]
+								                
+[[1, 10], [2, 5], [1, 7], [2, 6]] 4  
 
-4
-16
-
-[[1, 10], [2, 5], [2, 7], [1, 10]] 5
-
-2
-17
+Try every possible subset: O(2^n)
 			[]
 		[]              [1, 10]
     []  [2, 5]    [1, 10]    [1, 10], [2, 5] 
@@ -24,11 +18,15 @@ DESIRED OUTPUT:
 
 
 ALGO:
+Taking advantage of the fact that we have only two possible weights - 1 or 2
+
 * split the list into two groups by weight 1 and 2
 * sort both by value
 * pick two items from the top of the first group and one from the second
 * compare which is more efficient to take - two from the first goup or one from the second
 
+Time: O(n * log(n))
+Space: O(n)
  */
 
 const getGoupsByWeight = (items) => {
