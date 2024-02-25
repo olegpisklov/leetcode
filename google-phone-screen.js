@@ -6,10 +6,14 @@ DESIRED OUTPUT:
 * Subset of items from input so that
   * total weight does not exceed capacity C.
   * total value of selected items is maximized.
-								                
-[[1, 10], [2, 5], [1, 7], [2, 6]] 4  
 
-Try every possible subset: O(2^n)
+Questions to ask: 
+	* what is the max length of the array?
+	* what is the max capacity?
+	
+Example: [[1, 10], [2, 5], [1, 7], [2, 6]] 4  
+
+Try every possible subset: O(2^n) - we either take an item or not
 			[]
 		[]              [1, 10]
     []  [2, 5]    [1, 10]    [1, 10], [2, 5] 
