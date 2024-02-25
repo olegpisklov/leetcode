@@ -13,7 +13,7 @@ Questions to ask:
 	
 Example: [[1, 10], [2, 5], [1, 7], [2, 6]] 4  
 
-Try every possible subset: O(2^n) - we either take an item or not
+Brutforce: Try every possible subset, we either take an item or not: O(2^n)
 			[]
 		[]              [1, 10]
     []  [2, 5]    [1, 10]    [1, 10], [2, 5] 
@@ -104,4 +104,32 @@ const selectMaxCapacity = (items, weightLimit) => {
 	return resultSubset;
 }
 
+const selectMaxCapacityBrut = (arr, target) => {
+	let maxValue = 0;
+	let resultSubset = [];
+
+	const helper = (i, curRes, curWeight, curValue) => {
+		if (i === arr.length || curWeight > target) return;
+		
+		if (maxValue < curValue) {
+			resultSubset = curRes;
+			maxValue = curValue;
+		}
+
+		helper(i + 1, [...curRes, arr[i]], curWeight + arr[i][0], curValue + arr[i][1]); // take an item
+		helper(i + 1, [...curRes], curWeight, curValue); // not taking an item
+	}
+
+	helper(0, [], 0, 0);
+
+	return resultSubset;
+}
+
+
+console.time('sort');
 console.log(selectMaxCapacity([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 5 ))
+console.timeEnd('sort');
+
+console.time('brut');
+console.log(selectMaxCapacityBrut([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 5 ));
+console.timeEnd('brut');
