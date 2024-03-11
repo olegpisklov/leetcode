@@ -21,7 +21,7 @@ Brutforce: Try every possible subset, we either take an item or not: O(2^n)
 []  [2, 5]   [1, 7]    [2, 5],[1, 7]     [1, 10],[1, 7]  [1,10],[2,5],  [1, 7]
 
 
-ALGO:
+ALGO THAT DIDN'T WORK:
 Taking advantage of the fact that we have only two possible weights - 1 or 2
 
 * split the list into two groups by weight 1 and 2
@@ -29,107 +29,167 @@ Taking advantage of the fact that we have only two possible weights - 1 or 2
 * pick two items from the top of the first group and one from the second
 * compare which is more efficient to take in terms of value - two from the first goup or one from the second
 
+[2, 11] [1, 7] [1, 3]  limit 2
+ 5.5     7       3
+
+[1, 7] [2, 11] [1, 3]
+
+[2, 11] [1, 7] [1, 5]  limit 2
+
+
 Time: O(n * log(n))
 Space: O(n)
+
  */
 
-const getGoupsByWeight = (items) => {
-	const first = [];
-	const second = [];
-
-	for (let i = 0; i < items.length; ++i) {
-		if (items[i][0] === 1) {
-			first.push(items[i])
-		} else {
-			second.push(items[i])
-		}
-	}
-
-	return [first, second];
-}
-
-const selectMaxCapacity = (items, weightLimit) => {
-	if (items === undefined || weightLimit === undefined) {
-      	throw new Error('Invalid argument');
-    }
-  	if (items.length === 0 || weightLimit === 0) {
-    	return [];
-    }
-  
-	// sort by value
-  	items.sort((a, b) => a[1] - b[1]);
-  
-	const [fistGroup, secondGroup] = getGoupsByWeight(items); // [[[1,7], [1,10]], [[2,5], [2,6]]]]
-  	const resultSubset = []; 
-    let currentWeight = 0;
-
-	while (currentWeight < weightLimit && (fistGroup.length || secondGroup.length)) {
-		const pairOne = fistGroup.length ? fistGroup[fistGroup.length - 1] : null;
-		const pairTwo = fistGroup.length > 1 ? fistGroup[fistGroup.length - 2] : null;;
-		const pairThree = secondGroup.length ? secondGroup[secondGroup.length - 1] : null;
-
-		if (currentWeight + 1 === weightLimit) {
-			if (pairOne) resultSubset.push(fistGroup.pop());
-			return resultSubset;
-		}
-
-		if (pairOne && pairTwo && pairThree) {
-			if (pairOne[1] + pairTwo[1] > pairThree[1]) {
-				resultSubset.push(fistGroup.pop());
-				resultSubset.push(fistGroup.pop());
-			} else {
-				resultSubset.push(secondGroup.pop());
-			}
-			currentWeight += 2;
-		} else if (pairOne && pairTwo) {
-			resultSubset.push(fistGroup.pop());
-			currentWeight += 1;
-		} else if (pairOne && pairThree) {
-			if (pairOne[1] > pairThree[1]) {
-				resultSubset.push(fistGroup.pop());
-				currentWeight += 1;
-			} else {
-				resultSubset.push(secondGroup.pop())
-				currentWeight += 2;
-			}
-		} else if (pairOne) {
-			resultSubset.push(fistGroup.pop());
-			currentWeight += 1;
-		} else if (pairThree) {
-			resultSubset.push(secondGroup.pop());
-			currentWeight += 2;
-		}
-	}
-
-	return resultSubset;
-}
-
 const selectMaxCapacityBrut = (arr, target) => {
-	let maxValue = 0;
-	let resultSubset = [];
+	// const memo = new Array(arr.length).fill(0).map(() => new Array(target + 1));
 
-	const helper = (i, curRes, curWeight, curValue) => {
-		if (i === arr.length || curWeight > target) return;
-		
-		if (maxValue < curValue) {
-			resultSubset = curRes;
-			maxValue = curValue;
+	const helper = (i, curSubset, curWeight, curValue) => {
+		if (i === arr.length || curWeight === target) {
+			return [curSubset, curValue];
 		}
 
-		helper(i + 1, [...curRes, arr[i]], curWeight + arr[i][0], curValue + arr[i][1]); // take an item
-		helper(i + 1, [...curRes], curWeight, curValue); // not taking an item
-	}
+		// if (memo[i][curWeight]) return memo[i][curWeight];
+		
+		let res1 = [curSubset, curValue];
 
-	helper(0, [], 0, 0);
+		if (curWeight + arr[i][0] <= target) {
+			res1 = helper(i + 1, [...curSubset, arr[i]], curWeight + arr[i][0], curValue + arr[i][1]); // take an item
+		}
+		const res2 = helper(i + 1, [...curSubset], curWeight, curValue); // not taking an item
 
-	return resultSubset;
+		return res1[1] > res2[1] ? res1 : res2; // return the res with max value
+
+		// return memo[i][curWeight];
+	};
+
+	return helper(0, [], 0, 0)[0]; // return the subset
 }
 
+const Heap = require('./data structures/Heap');
 
-console.time('sort');
-console.log(selectMaxCapacity([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 5 ))
-console.timeEnd('sort');
+const selectMaxCapacityHeap = (items, weightLimit) => {
+	// Check for invalid arguments
+	if (!items || !weightLimit) {
+		throw new Error('Invalid arguments');
+	}
+	if (items.length === 0 || weightLimit === 0) {
+		return [];
+	}
+
+	// Use a priority queue to efficiently select items
+	const maxHeapOne = new Heap((a, b) => a[1] < b[1]); // Prioritize by value, max on the top
+	const maxHeapTwo = new Heap((a, b) => a[1] < b[1]); // Prioritize by value, max on the top
+
+	// split the items into two groups by weight: 1 or 2
+	for (const item of items) {
+		if (item[0] === 1) {
+			maxHeapOne.insert(item);
+		} else if (item[0] === 2) {
+			maxHeapTwo.insert(item);
+		}
+	}
+
+	if (weightLimit === 1) {
+		return maxHeapOne.size() ? [maxHeapOne.delTop()] : [];
+	}
+
+	const minHeapResult = new Heap((a, b) => a[1] > b[1]); // Prioritize by value, min on the top
+	let currentWeight = 0;
+
+	// add 2's to the result min heap
+	while (currentWeight + 1 < weightLimit && maxHeapTwo.size()) {
+		minHeapResult.insert(maxHeapTwo.delTop());
+		currentWeight += 2;
+	}
+
+	// add 1's to the result min heap
+	while (currentWeight < weightLimit && maxHeapOne.size()) {
+		minHeapResult.insert(maxHeapOne.delTop());
+		currentWeight += 1;
+	}
+
+	// try to replace 2's with 1's if they bring more value
+	while (maxHeapOne.size()) {
+		const resItem = minHeapResult.delTop();
+		const curItem1 = maxHeapOne.delTop();
+		const curItem2 = maxHeapOne.delTop(); // can be empty
+		const curValue = curItem2 ? curItem1[1] + curItem2[1] : curItem1[1];
+
+		if (resItem[1] < curValue) {
+			minHeapResult.insert(curItem1);
+			
+			if (curItem2) {
+				minHeapResult.insert(curItem2);
+			}
+		} else {
+			// 1's don't bring more value any longer, so break the loop
+			minHeapResult.insert(resItem);
+			break;
+		}
+	}
+
+	const result = [];
+	while (minHeapResult.size()) result.push(minHeapResult.delTop());
+	return result;
+};
+
+
+test_items_1 = [[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [1, 6], [1, 3]];
+test_capacity_1 = 6
+
+test_items_2 = [[1, 10], [1, 2], [1, 5], [1, 11], [1, 7], [1, 6], [1, 3]];
+test_capacity_2 = 6
+
+test_items_3 = [[1, 10], [1, 2], [2, 5], [2, 11], [2, 7], [2, 6], [2, 3]];
+test_capacity_3 = 5
+
+test_items_4 = [[2, 11], [1, 7], [1, 3]]
+test_capacity_4 = 2
+
+test_items_5 = [[2, 11], [1, 7], [1, 5]] 
+test_capacity_5 = 2
+
+
+const count_value = (res) => res.reduce((cur, next) => cur + next[1], 0);
+
 
 console.time('brut');
-console.log(selectMaxCapacityBrut([[1, 10], [1, 2], [2, 5], [2, 11], [1, 7], [2, 6]], 5 ));
+(() => {
+	const minHeapResult_1 = selectMaxCapacityBrut(test_items_1, test_capacity_1);
+	console.log(minHeapResult_1, count_value(minHeapResult_1))
+	
+	const minHeapResult_2 = selectMaxCapacityBrut(test_items_2, test_capacity_2);
+	console.log(minHeapResult_2, count_value(minHeapResult_2))
+	
+	const minHeapResult_3 = selectMaxCapacityBrut(test_items_3, test_capacity_3);
+	console.log(minHeapResult_3, count_value(minHeapResult_3))
+
+	const minHeapResult_4 = selectMaxCapacityBrut(test_items_4, test_capacity_4);
+	console.log(minHeapResult_4, count_value(minHeapResult_4))
+
+	const minHeapResult_5 = selectMaxCapacityBrut(test_items_5, test_capacity_5);
+	console.log(minHeapResult_5, count_value(minHeapResult_5))
+})()
 console.timeEnd('brut');
+
+
+console.time('heap');
+(() => {
+	const minHeapResult_1 = selectMaxCapacityHeap(test_items_1, test_capacity_1);
+	console.log(minHeapResult_1, count_value(minHeapResult_1))
+	
+	const minHeapResult_2 = selectMaxCapacityHeap(test_items_2, test_capacity_2);
+	console.log(minHeapResult_2, count_value(minHeapResult_2))
+	
+	const minHeapResult_3 = selectMaxCapacityHeap(test_items_3, test_capacity_3);
+	console.log(minHeapResult_3, count_value(minHeapResult_3))
+
+	const minHeapResult_4 = selectMaxCapacityHeap(test_items_4, test_capacity_4);
+	console.log(minHeapResult_4, count_value(minHeapResult_4))
+
+	const minHeapResult_5 = selectMaxCapacityHeap(test_items_5, test_capacity_5);
+	console.log(minHeapResult_5, count_value(minHeapResult_5))
+})()
+console.timeEnd('heap');

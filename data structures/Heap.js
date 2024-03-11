@@ -102,6 +102,10 @@ class Heap {
         this.swim(this.pq.length - 1);
     }
 
+    peek() {
+        return this.pq.length > 1 ? this.pq[1] : null;
+    }
+
     swim(k) {
         while (k > 1 && this.compare(k/2, k)) {
             this.swap(k/2, k);
@@ -156,6 +160,10 @@ class Heap {
     }
 
     getLength() {
+        return this.pq.length - 1;
+    }
+
+    size() {
         return this.pq.length - 1;
     }
 }
