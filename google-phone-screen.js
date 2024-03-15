@@ -43,7 +43,7 @@ Space: O(n)
  */
 
 const selectMaxCapacityBrut = (arr, target) => {
-	const helper = (i, curSubset, curWeight, curValue) => {
+	const helper = (i, curWeight, curSubset, curValue) => {
 		if (i < 0 || curWeight === 0) {
 			return [curSubset, curValue];
 		}
@@ -51,14 +51,14 @@ const selectMaxCapacityBrut = (arr, target) => {
 		let res1 = [curSubset, curValue];
 
 		if (curWeight - arr[i][0] >= 0) {
-			res1 = helper(i - 1, [...curSubset, arr[i]], curWeight - arr[i][0], curValue + arr[i][1]); // take an item
+			res1 = helper(i - 1, curWeight - arr[i][0], [...curSubset, arr[i]], curValue + arr[i][1]); // take an item
 		}
-		const res2 = helper(i - 1, [...curSubset], curWeight, curValue); // not taking an item
+		const res2 = helper(i - 1, curWeight, [...curSubset], curValue); // not taking an item
 
 		return res1[1] > res2[1] ? res1 : res2; // return the res with max value
 	};
 
-	return helper(arr.length - 1, [], target, 0)[0]; // return the subset
+	return helper(arr.length - 1, target, [] , 0)[0]; // return the subset
 }
 
 const selectMaxCapacityDP = (arr, target) => {
