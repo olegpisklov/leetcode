@@ -43,28 +43,50 @@ Space: O(n)
  */
 
 const selectMaxCapacityBrut = (arr, target) => {
-	// const memo = new Array(arr.length).fill(0).map(() => new Array(target + 1));
-
 	const helper = (i, curSubset, curWeight, curValue) => {
-		if (i === arr.length || curWeight === target) {
+		if (i < 0 || curWeight === 0) {
 			return [curSubset, curValue];
 		}
-
-		// if (memo[i][curWeight]) return memo[i][curWeight];
 		
 		let res1 = [curSubset, curValue];
 
-		if (curWeight + arr[i][0] <= target) {
-			res1 = helper(i + 1, [...curSubset, arr[i]], curWeight + arr[i][0], curValue + arr[i][1]); // take an item
+		if (curWeight - arr[i][0] >= 0) {
+			res1 = helper(i - 1, [...curSubset, arr[i]], curWeight - arr[i][0], curValue + arr[i][1]); // take an item
 		}
-		const res2 = helper(i + 1, [...curSubset], curWeight, curValue); // not taking an item
+		const res2 = helper(i - 1, [...curSubset], curWeight, curValue); // not taking an item
 
 		return res1[1] > res2[1] ? res1 : res2; // return the res with max value
-
-		// return memo[i][curWeight];
 	};
 
-	return helper(0, [], 0, 0)[0]; // return the subset
+	return helper(arr.length - 1, [], target, 0)[0]; // return the subset
+}
+
+const selectMaxCapacityDP = (arr, target) => {
+	const memo = new Array(arr.length).fill(0).map(() => new Array(target));
+	const count_value = (res) => res.reduce((cur, next) => cur + next[1], 0);
+
+	const helper = (i, curWeight) => {
+		if (i < 0 || curWeight === 0) {	
+			return [];
+		}
+		if (memo[i][curWeight] !== undefined) {
+			return memo[i][curWeight];
+		}
+
+		let res1 = [];
+
+		if (curWeight - arr[i][0] >= 0) {
+			res1 = [...helper(i - 1, curWeight - arr[i][0]), arr[i]]; // take an item
+		}
+		
+		const res2 = helper(i - 1, curWeight); // not taking an item
+		
+		memo[i][curWeight] = count_value(res1) > count_value(res2) ? res1 : res2; // save the res with max value
+
+		return memo[i][curWeight];
+	};
+
+	return helper(arr.length - 1, target);
 }
 
 const Heap = require('./data structures/Heap');
@@ -173,6 +195,26 @@ console.time('brut');
 	console.log(minHeapResult_5, count_value(minHeapResult_5))
 })()
 console.timeEnd('brut');
+
+
+console.time('DP');
+(() => {
+	const minHeapResult_1 = selectMaxCapacityDP(test_items_1, test_capacity_1);
+	console.log(minHeapResult_1, count_value(minHeapResult_1))
+	
+	const minHeapResult_2 = selectMaxCapacityDP(test_items_2, test_capacity_2);
+	console.log(minHeapResult_2, count_value(minHeapResult_2))
+	
+	const minHeapResult_3 = selectMaxCapacityDP(test_items_3, test_capacity_3);
+	console.log(minHeapResult_3, count_value(minHeapResult_3))
+
+	const minHeapResult_4 = selectMaxCapacityDP(test_items_4, test_capacity_4);
+	console.log(minHeapResult_4, count_value(minHeapResult_4))
+
+	const minHeapResult_5 = selectMaxCapacityDP(test_items_5, test_capacity_5);
+	console.log(minHeapResult_5, count_value(minHeapResult_5))
+})()
+console.timeEnd('DP');
 
 
 console.time('heap');
