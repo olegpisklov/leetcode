@@ -62,26 +62,27 @@ const selectMaxCapacityBrut = (arr, target) => {
 }
 
 const selectMaxCapacityDP = (arr, target) => {
-	const memo = new Array(arr.length).fill(0).map(() => new Array(target));
+	const memo = new Array(arr.length).fill(0)
+		.map(() => new Array(target + 1).fill(null));
 	const count_value = (res) => res.reduce((cur, next) => cur + next[1], 0);
 
 	const helper = (i, curWeight) => {
 		if (i < 0 || curWeight === 0) {	
 			return [];
 		}
-		if (memo[i][curWeight] !== undefined) {
+		if (memo[i][curWeight] !== null) {
 			return memo[i][curWeight];
 		}
 
-		let res1 = [];
+		let subset1 = [];
 
 		if (curWeight - arr[i][0] >= 0) {
-			res1 = [...helper(i - 1, curWeight - arr[i][0]), arr[i]]; // take an item
+			subset1 = [...helper(i - 1, curWeight - arr[i][0]), arr[i]]; // take an item
 		}
 		
-		const res2 = helper(i - 1, curWeight); // not taking an item
+		const subset2 = helper(i - 1, curWeight); // not taking an item
 		
-		memo[i][curWeight] = count_value(res1) > count_value(res2) ? res1 : res2; // save the res with max value
+		memo[i][curWeight] = count_value(subset1) > count_value(subset2) ? subset1 : subset2; // save the res with max value
 
 		return memo[i][curWeight];
 	};
