@@ -63,7 +63,7 @@ const selectMaxCapacityBrut = (arr, target) => {
 
 const selectMaxCapacityDP = (arr, target) => {
 	const memo = new Array(arr.length).fill(0)
-		.map(() => new Array(target + 1).fill(null));
+		.map(() => new Array(target + 1).fill(null)); // we need to add 1 for the base case when target == 0
 	const count_value = (res) => res.reduce((cur, next) => cur + next[1], 0);
 
 	const helper = (i, curWeight) => {
@@ -153,9 +153,8 @@ const selectMaxCapacityHeap = (items, weightLimit) => {
 		}
 	}
 
-	const result = [];
-	while (minHeapResult.size()) result.push(minHeapResult.delTop());
-	return result;
+	return new Array(minHeapResult.size()).fill(0)
+		.map(i => minHeapResult.delTop());
 };
 
 
